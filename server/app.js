@@ -17,6 +17,7 @@ db.once('open', function() {
 app.use(cors())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json())
+app.use(express.static(__dirname + '/public', { dotfiles: 'allow' } ))
 
 app.use("/api", routes)
 
@@ -43,7 +44,9 @@ app.use((err, req, res, next) =>{
       }
 })  
 
-app.listen(port, () => console.log(`Listening on port ${port}!`))
+module.exports = app
+
+// app.listen(port, () => console.log(`Listening on port ${port}!`))
 
 
 
