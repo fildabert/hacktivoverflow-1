@@ -145,6 +145,22 @@ class PostController {
         })
     }
 
+    static update (req, res, next) {
+        Post.findOne({_id: req.query.postid})
+        .then(post =>{
+            post.title = req.body.title
+            post.description = req.body.description
+            return post.save()
+        })
+        .then(post =>{
+            console.log(post)
+            res.status(200).json(post)
+        })
+        .catch(next)
+
+    }
+
+
     static fetchPOTD(req, res, next) {
         res.status(200).json(potd)
     }

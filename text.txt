@@ -1,0 +1,5 @@
+Kanban jadiin component task items
+E-commerce perbaikin login dan tambahan fitur tambahan
+FancyTodo API Documentation
+Hacktivoverflow update question, tambahin fitur tambahan
+

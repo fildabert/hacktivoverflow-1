@@ -22,6 +22,7 @@ export default {
   // state,
   state: {
     // baseUrl: "http://18.136.102.102/api",
+    // baseUrl: "https://flowwit-server.fildabert.com/api",
     baseUrl: "http://localhost:3000/api",
     isLogin: false,
     username: "",

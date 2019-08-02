@@ -15,7 +15,9 @@
             
             <span caption style="color: grey;">{{post.author.username}} <span class="q-ml-sm">{{dateDifference}}</span>
             <q-chip v-for="(tag, i) in post.tags" :key="i" clickable @click="getTag(tag)" icon="label" color="blue-grey-4" dense>{{tag}}</q-chip>
+            <q-icon v-if="post.author.username === $store.state.main.username" class="edit q-mr-xs q-ml-xs" style="font-size: 18px;" name="edit" @click="edit"/>
             <q-icon v-if="post.author.username === $store.state.main.username" class="delete q-ml-sm" name="delete" style="font-size: 18px;" @click="del"/>
+
             </span>
             <div class="text-h6 q-pb-xl">{{post.title}}</div>
 
@@ -84,13 +86,15 @@
 </template>
 
 <script>
+import wysiwygPost from "./wysiwygPost"
 import comment from "./comment"
 import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
 name: "MainCard",
 components: {
-  comment
+  comment,
+  wysiwygPost
 },
 props: ["post"],
 created () {
@@ -323,6 +327,37 @@ methods: {
         message: err.response.data,
         position: 'top'
      })
+    })
+  },
+  edit: function() {
+    this.$q.dialog({
+        component: wysiwygPost,
+        text: this.post.description,
+        textTitle: this.post.title
+    }).onOk(data =>{
+        this.$axios.request({
+                    method: "PUT",
+                    url: `${this.baseUrl}/posts/edit?postid=${this.post._id}`,
+                    headers: {
+                        token: sessionStorage.getItem("jwt")
+                    },
+                    data: {
+                        description: data.description,
+                        title: data.title
+                    }
+                })
+                .then(updated =>{
+                    this.$store.dispatch("GET_POSTS")
+                })
+                .catch(err =>{
+                    this.$q.notify({
+                    color: 'red-5',
+                    textColor: 'white',
+                    icon: 'error',
+                    message: err.response.data,
+                    position: 'top'
+                })
+                })
     })
   }
 },
